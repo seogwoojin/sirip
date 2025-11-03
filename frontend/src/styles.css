@@ -1,0 +1,109 @@
+:root {
+  font-family: 'Pretendard', 'Noto Sans KR', system-ui, sans-serif;
+  color: #0f172a;
+  background-color: #f8fafc;
+  line-height: 1.6;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  color: white;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.5rem, 5vw, 3rem);
+}
+
+.hero p {
+  margin: 0 auto;
+  max-width: 40rem;
+  font-size: 1.1rem;
+}
+
+main {
+  flex: 1;
+  padding: 3rem 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.features {
+  margin-bottom: 3rem;
+}
+
+.feature-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.feature-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 16px 24px rgba(15, 23, 42, 0.08);
+  padding: 1.5rem;
+}
+
+.events {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 16px 24px rgba(15, 23, 42, 0.08);
+  padding: 1.5rem;
+}
+
+.event-list {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.event-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.event-card dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+dt {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+dd {
+  margin: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #475569;
+}
+
+.muted {
+  color: #64748b;
+}
+
+.error {
+  color: #ef4444;
+}
