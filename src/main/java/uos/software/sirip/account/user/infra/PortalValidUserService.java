@@ -1,10 +1,12 @@
 package uos.software.sirip.account.user.infra;
 
+import org.springframework.stereotype.Service;
 import uos.software.sirip.account.user.application.UserData;
 import uos.software.sirip.account.user.application.ValidUserService;
 
 import com.microsoft.playwright.*;
 
+@Service
 public class PortalValidUserService implements ValidUserService {
 
     private final String portalUrl = "https://portal.uos.ac.kr/p/STUD/";

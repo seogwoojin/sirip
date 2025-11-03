@@ -5,12 +5,25 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long accountId;
-    public String email;
+    private Long accountId;
+
+    private String email;
+
     private String role; // USER or MANAGER
+
+    public Account(String email, String role) {
+        this.email = email;
+        this.role = role;
+    }
 }
