@@ -1,5 +1,6 @@
 package uos.software.sirip.user.infra;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,23 @@ public class PortalValidUserService implements ValidUserService {
     @Override
     public UserData isValid(String email, String password) {
         try (Playwright playwright = Playwright.create()) {
+            String os = System.getProperty("os.name").toLowerCase();
+            Path chromePath;
+
+            if (os.contains("mac")) {
+                chromePath = Paths.get("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
+            } else if (os.contains("win")) {
+                chromePath = Paths.get("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+            } else {
+                // 리눅스 (예: Ubuntu, Docker 등)
+                chromePath = Paths.get("/usr/bin/google-chrome");
+            }
+
             Browser browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions()
-                    .setHeadless(false)
-                    .setExecutablePath(
-                        Paths.get("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
-                    .setArgs(
-                        List.of("--ignore-certificate-errors", "--disable-gpu", "--no-sandbox"))
+                    new BrowserType.LaunchOptions()
+                            .setHeadless(false)
+                            .setExecutablePath(chromePath)
+                            .setArgs(List.of("--ignore-certificate-errors", "--disable-gpu", "--no-sandbox"))
             );
 
             BrowserContext context = browser.newContext();

@@ -1,9 +1,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sirip
-    username: root
-    password: zaza4490
+    url: jdbc:mysql://localhost:3306/test_db
+    username: test
+    password: test
+  jpa:
+    hibernate:
+      ddl-auto: update
 jwt:
   secret: your-very-long-secret-key-change-this
   validity-in-ms: 3600000 # 1 hour

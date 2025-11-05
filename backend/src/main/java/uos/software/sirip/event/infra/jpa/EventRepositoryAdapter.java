@@ -21,20 +21,21 @@ public class EventRepositoryAdapter implements EventRepository {
     @Override
     @Transactional
     public Event save(Event event) {
-        EventJpaEntity saved = eventJpaRepository.save(EventJpaEntity.fromDomain(event));
+        uos.software.sirip.event.infra.jpa.Event saved = eventJpaRepository.save(
+                uos.software.sirip.event.infra.jpa.Event.fromDomain(event));
         return saved.toDomain();
     }
 
     @Override
     public Optional<Event> findById(Long id) {
-        return eventJpaRepository.findById(id).map(EventJpaEntity::toDomain);
+        return eventJpaRepository.findById(id).map(uos.software.sirip.event.infra.jpa.Event::toDomain);
     }
 
     @Override
     public List<Event> findAll() {
         return eventJpaRepository.findAll()
             .stream()
-            .map(EventJpaEntity::toDomain)
+            .map(uos.software.sirip.event.infra.jpa.Event::toDomain)
             .collect(Collectors.toList());
     }
 }
