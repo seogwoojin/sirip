@@ -1,4 +1,4 @@
-package uos.software.sirip.account.user.application;
+package uos.software.sirip.user.application;
 
 public interface ValidUserService {
 

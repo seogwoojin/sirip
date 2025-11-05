@@ -1,4 +1,4 @@
-package uos.software.sirip.account;
+package uos.software.sirip.user.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,12 +18,12 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
 
+    private Role role; // USER or MANAGER
+
     private String email;
+    private String password;
 
-    private String role; // USER or MANAGER
-
-    public Account(String email, String role) {
-        this.email = email;
+    public Account(Role role, String email, String password) {
         this.role = role;
     }
 }

@@ -1,4 +1,4 @@
-package uos.software.sirip.account.user.dto;
+package uos.software.sirip.user.dto;
 
 public record UserDto(
     String email,

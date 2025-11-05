@@ -1,4 +1,4 @@
-package uos.software.sirip.account.manager.domain;
+package uos.software.sirip.user.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,12 +8,11 @@ import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uos.software.sirip.account.Account;
 
-@Entity
+@Entity(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Manager {
+public class User {
 
     @Id
     private Long accountId;
@@ -23,10 +22,12 @@ public class Manager {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    private String department;
+    private String name;
+    private String studentId;
 
-    public Manager(Account account, String department) {
+    public User(Account account, String name, String studentId) {
         this.account = account;
-        this.department = department;
+        this.name = name;
+        this.studentId = studentId;
     }
 }

@@ -2,6 +2,7 @@ package uos.software.sirip.coupon.api;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,17 +19,15 @@ import uos.software.sirip.coupon.application.CouponSummary;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class CouponController {
 
     private final CouponApplicationService couponApplicationService;
 
-    public CouponController(CouponApplicationService couponApplicationService) {
-        this.couponApplicationService = couponApplicationService;
-    }
-
     @PostMapping("/events/{eventId}/coupons")
     @ResponseStatus(HttpStatus.CREATED)
-    public CouponApplicationResponse apply(@PathVariable Long eventId, @RequestParam Long accountId) {
+    public CouponApplicationResponse apply(@PathVariable Long eventId,
+        @RequestParam Long accountId) {
         CouponApplicationResult result = couponApplicationService.apply(accountId, eventId);
         return CouponApplicationResponse.from(result);
     }

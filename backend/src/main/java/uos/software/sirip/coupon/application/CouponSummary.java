@@ -1,9 +1,11 @@
 package uos.software.sirip.coupon.application;
 
 import java.time.LocalDateTime;
+import lombok.Getter;
 import uos.software.sirip.coupon.domain.Coupon;
 import uos.software.sirip.coupon.domain.CouponStatus;
 
+@Getter
 public class CouponSummary {
 
     private final Long couponId;
@@ -52,39 +54,4 @@ public class CouponSummary {
         );
     }
 
-    public Long getCouponId() {
-        return couponId;
-    }
-
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public CouponStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getAppliedAt() {
-        return appliedAt;
-    }
-
-    public LocalDateTime getIssuedAt() {
-        return issuedAt;
-    }
-
-    public LocalDateTime getRedeemedAt() {
-        return redeemedAt;
-    }
-
-    public LocalDateTime getNoShowAt() {
-        return noShowAt;
-    }
-
-    public Integer getQueuePosition() {
-        return queuePosition;
-    }
 }

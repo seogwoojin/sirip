@@ -4,6 +4,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uos.software.sirip.coupon.domain.Coupon;
@@ -21,6 +22,7 @@ import uos.software.sirip.event.domain.EventRepository;
 import uos.software.sirip.event.exception.EventNotFoundException;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class CouponApplicationService {
 
@@ -30,18 +32,6 @@ public class CouponApplicationService {
     private final PenaltyRepository penaltyRepository;
     private final EventRepository eventRepository;
     private final Clock clock;
-
-    public CouponApplicationService(
-        CouponRepository couponRepository,
-        PenaltyRepository penaltyRepository,
-        EventRepository eventRepository,
-        Clock clock
-    ) {
-        this.couponRepository = couponRepository;
-        this.penaltyRepository = penaltyRepository;
-        this.eventRepository = eventRepository;
-        this.clock = clock;
-    }
 
     public CouponApplicationResult apply(Long accountId, Long eventId) {
         LocalDateTime now = LocalDateTime.now(clock);
@@ -105,7 +95,8 @@ public class CouponApplicationService {
             .orElseThrow(() -> new EventNotFoundException(saved.getEventId()));
         Event incremented = event.incrementRemaining();
         eventRepository.save(incremented);
-        penaltyRepository.save(Penalty.create(saved.getAccountId(), now, now.plusMonths(PENALTY_MONTHS)));
+        penaltyRepository.save(
+            Penalty.create(saved.getAccountId(), now, now.plusMonths(PENALTY_MONTHS)));
         promoteNextWaiting(incremented.getId());
         return CouponSummary.from(saved);
     }
