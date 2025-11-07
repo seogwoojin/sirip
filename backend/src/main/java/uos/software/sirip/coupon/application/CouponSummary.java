@@ -2,8 +2,8 @@ package uos.software.sirip.coupon.application;
 
 import java.time.LocalDateTime;
 import lombok.Getter;
-import uos.software.sirip.coupon.domain.Coupon;
 import uos.software.sirip.coupon.domain.CouponStatus;
+import uos.software.sirip.coupon.domain.CouponJpaEntity;
 
 @Getter
 public class CouponSummary {
@@ -40,11 +40,11 @@ public class CouponSummary {
         this.queuePosition = queuePosition;
     }
 
-    public static CouponSummary from(Coupon coupon) {
+    public static CouponSummary from(CouponJpaEntity coupon) {
         return new CouponSummary(
             coupon.getId(),
-            coupon.getEventId(),
-            coupon.getAccountId(),
+            coupon.getEvent().getId(),
+            coupon.getAccount().getAccountId(),
             coupon.getStatus(),
             coupon.getAppliedAt(),
             coupon.getIssuedAt(),

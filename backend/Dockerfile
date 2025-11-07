@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM gradle:8.5-jdk17-alpine AS builder
+FROM gradle:8.5-jdk17 AS builder
 WORKDIR /workspace
 COPY gradle gradle
 COPY build.gradle settings.gradle gradlew ./

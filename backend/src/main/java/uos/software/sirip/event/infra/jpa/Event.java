@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uos.software.sirip.event.domain.Event;
 import uos.software.sirip.user.domain.Account;
 
 @Entity
@@ -53,7 +52,8 @@ public class Event {
         int totalCoupons,
         int remainingCoupons,
         LocalDateTime startAt,
-        LocalDateTime endAt
+        LocalDateTime endAt,
+        Account account
     ) {
         this.id = id;
         this.title = title;
@@ -63,31 +63,27 @@ public class Event {
         this.remainingCoupons = remainingCoupons;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.account = account;
     }
 
-    public static Event fromDomain(Event event) {
-        return new Event(
-            event.getId(),
-            event.getTitle(),
-            event.getDescription(),
-            event.getRewardDescription(),
-            event.getTotalCoupons(),
-            event.getRemainingCoupons(),
-            event.getStartAt(),
-            event.getEndAt()
-        );
+    public void changeRewardDescription(String rewardDescription) {
+        this.rewardDescription = rewardDescription;
     }
 
-    public Event toDomain() {
-        return new Event(
-            id,
-            title,
-            description,
-            rewardDescription,
-            totalCoupons,
-            remainingCoupons,
-            startAt,
-            endAt
-        );
+    public void changeEventDate(LocalDateTime startAt, LocalDateTime endAt) {
+        this.startAt = startAt;
+        this.endAt = endAt;
+    }
+
+    public boolean isActive(LocalDateTime now) {
+        return startAt.isBefore(now) || endAt.isAfter(now);
+    }
+
+    public void decrementRemaining() {
+        remainingCoupons -= 1;
+    }
+
+    public void incrementRemaining() {
+        remainingCoupons += 1;
     }
 }

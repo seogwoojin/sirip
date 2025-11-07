@@ -27,6 +27,7 @@ public class Account {
 
     private String email;
     private String password;
+    private Boolean penalty;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> events = new ArrayList<>();
@@ -35,5 +36,10 @@ public class Account {
         this.email = email;
         this.role = role;
         this.password = password;
+        this.penalty = false;
+    }
+
+    public void registerPenalty() {
+        this.penalty = true;
     }
 }

@@ -7,19 +7,15 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uos.software.sirip.coupon.domain.Coupon;
-import uos.software.sirip.coupon.domain.CouponRepository;
 import uos.software.sirip.coupon.domain.CouponStatus;
-import uos.software.sirip.coupon.domain.Penalty;
-import uos.software.sirip.coupon.domain.PenaltyRepository;
-import uos.software.sirip.coupon.exception.ActivePenaltyException;
-import uos.software.sirip.coupon.exception.CouponNotFoundException;
-import uos.software.sirip.coupon.exception.DuplicateApplicationException;
-import uos.software.sirip.coupon.exception.EventClosedException;
-import uos.software.sirip.coupon.exception.InvalidCouponStateException;
-import uos.software.sirip.event.domain.Event;
-import uos.software.sirip.event.domain.EventRepository;
+import uos.software.sirip.coupon.exception.*;
+import uos.software.sirip.coupon.domain.CouponJpaEntity;
+import uos.software.sirip.coupon.domain.CouponJpaRepository;
 import uos.software.sirip.event.exception.EventNotFoundException;
+import uos.software.sirip.event.infra.jpa.Event;
+import uos.software.sirip.event.infra.jpa.EventJpaRepository;
+import uos.software.sirip.user.domain.Account;
+import uos.software.sirip.user.domain.AuthService;
 
 @Service
 @RequiredArgsConstructor
@@ -28,111 +24,142 @@ public class CouponApplicationService {
 
     private static final int PENALTY_MONTHS = 6;
 
-    private final CouponRepository couponRepository;
-    private final PenaltyRepository penaltyRepository;
-    private final EventRepository eventRepository;
+    private final CouponJpaRepository couponJpaRepository;
+    private final EventJpaRepository eventJpaRepository;
     private final Clock clock;
+    private final AuthService authService;
 
+    /**
+     * ✅ 쿠폰 신청
+     */
     public CouponApplicationResult apply(Long accountId, Long eventId) {
         LocalDateTime now = LocalDateTime.now(clock);
-        penaltyRepository.findActiveByAccountId(accountId, now).ifPresent(penalty -> {
-            throw new ActivePenaltyException(accountId);
-        });
+        Account account = authService.getAccount(accountId);
 
-        Event event = eventRepository.findById(eventId)
+        if (account.getPenalty()) {
+            throw new ActivePenaltyException(accountId);
+        }
+
+        Event event = eventJpaRepository.findById(eventId)
             .orElseThrow(() -> new EventNotFoundException(eventId));
 
         if (!event.isActive(now)) {
             throw new EventClosedException(eventId);
         }
 
-        Coupon existingCoupon = couponRepository.findByEventIdAndAccountId(eventId, accountId)
+        // 중복 신청 확인
+        CouponJpaEntity existing = couponJpaRepository.findByEventIdAndAccountId(eventId, accountId)
             .orElse(null);
-        if (existingCoupon != null) {
-            if (existingCoupon.getStatus() == CouponStatus.WAITING) {
-                return CouponApplicationResult.queued(CouponSummary.from(existingCoupon));
+        if (existing != null) {
+            if (existing.getStatus() == CouponStatus.WAITING) {
+                return CouponApplicationResult.queued(CouponSummary.from(existing));
             }
-            if (!existingCoupon.getStatus().isTerminal()) {
+            if (!existing.getStatus().isTerminal()) {
                 throw new DuplicateApplicationException(accountId, eventId);
             }
         }
 
+        // 즉시 발급 or 대기열 등록
+        CouponJpaEntity saved;
         if (event.getRemainingCoupons() > 0) {
-            Coupon issued = Coupon.issued(null, eventId, accountId, now, now);
-            Coupon saved = couponRepository.save(issued);
-            eventRepository.save(event.decrementRemaining());
+            CouponJpaEntity issued = CouponJpaEntity.issued(event, account, now, now);
+            saved = couponJpaRepository.save(issued);
+            event.decrementRemaining();
+            eventJpaRepository.save(event);
             return CouponApplicationResult.issued(CouponSummary.from(saved));
         }
 
-        int queuePosition = couponRepository.countWaitingByEventId(eventId) + 1;
-        Coupon waiting = Coupon.waiting(null, eventId, accountId, now, queuePosition);
-        Coupon saved = couponRepository.save(waiting);
+        int queuePosition =
+            couponJpaRepository.countByEventIdAndStatus(eventId, CouponStatus.WAITING) + 1;
+        CouponJpaEntity waiting = CouponJpaEntity.waiting(event, account, now, queuePosition);
+        saved = couponJpaRepository.save(waiting);
         return CouponApplicationResult.queued(CouponSummary.from(saved));
     }
 
+    /**
+     * ✅ 쿠폰 사용
+     */
     public CouponSummary redeem(Long couponId) {
         LocalDateTime now = LocalDateTime.now(clock);
-        Coupon coupon = couponRepository.findById(couponId)
+        CouponJpaEntity coupon = couponJpaRepository.findById(couponId)
             .orElseThrow(() -> new CouponNotFoundException(couponId));
+
         if (!coupon.getStatus().isIssued()) {
             throw new InvalidCouponStateException("Coupon must be issued to redeem");
         }
-        Coupon redeemed = coupon.redeem(now);
-        Coupon saved = couponRepository.save(redeemed);
-        return CouponSummary.from(saved);
+
+        coupon.redeem(now);
+        return CouponSummary.from(couponJpaRepository.save(coupon));
     }
 
-    public CouponSummary markNoShow(Long couponId) {
+    /**
+     * ✅ 노쇼 처리
+     */
+    public CouponSummary markNoShow(Long accountId, Long couponId) {
         LocalDateTime now = LocalDateTime.now(clock);
-        Coupon coupon = couponRepository.findById(couponId)
+        CouponJpaEntity coupon = couponJpaRepository.findById(couponId)
             .orElseThrow(() -> new CouponNotFoundException(couponId));
+
         if (!coupon.getStatus().isIssued()) {
             throw new InvalidCouponStateException("Only issued coupons can be marked as no-show");
         }
-        Coupon updated = coupon.markNoShow(now);
-        Coupon saved = couponRepository.save(updated);
-        Event event = eventRepository.findById(saved.getEventId())
-            .orElseThrow(() -> new EventNotFoundException(saved.getEventId()));
-        Event incremented = event.incrementRemaining();
-        eventRepository.save(incremented);
-        penaltyRepository.save(
-            Penalty.create(saved.getAccountId(), now, now.plusMonths(PENALTY_MONTHS)));
-        promoteNextWaiting(incremented.getId());
-        return CouponSummary.from(saved);
+
+        coupon.markNoShow(now);
+        couponJpaRepository.save(coupon);
+
+        Event event = eventJpaRepository.findById(coupon.getEvent().getId())
+            .orElseThrow(() -> new EventNotFoundException(coupon.getEvent().getId()));
+
+        event.incrementRemaining();
+        eventJpaRepository.save(event);
+
+        Account account = authService.getAccount(accountId);
+        account.registerPenalty();
+        promoteNextWaiting(event);
+        return CouponSummary.from(coupon);
     }
 
+    /**
+     * ✅ 사용자 쿠폰 목록 조회
+     */
+    @Transactional(readOnly = true)
     public List<CouponSummary> listUserCoupons(Long accountId) {
-        return couponRepository.findByAccountId(accountId)
-            .stream()
+        return couponJpaRepository.findByAccountIdOrderByAppliedAtDesc(accountId).stream()
             .map(CouponSummary::from)
             .collect(Collectors.toList());
     }
 
-    public void fillWaitlist(Long eventId) {
-        promoteNextWaiting(eventId);
-    }
+    /**
+     * ✅ 대기열 쿠폰 승급
+     */
+    private void promoteNextWaiting(Event event) {
+        List<CouponJpaEntity> waitingCoupons =
+            couponJpaRepository.findByEventIdAndStatusOrderByQueuePositionAsc(
+                event.getId(), CouponStatus.WAITING);
 
-    private void promoteNextWaiting(Long eventId) {
-        Event event = eventRepository.findById(eventId)
-            .orElseThrow(() -> new EventNotFoundException(eventId));
-        List<Coupon> waitlist = couponRepository.findWaitingByEventIdOrderByQueuePosition(eventId);
-        if (waitlist.isEmpty() || event.getRemainingCoupons() <= 0) {
+        if (waitingCoupons.isEmpty() || event.getRemainingCoupons() <= 0) {
             return;
         }
+
         LocalDateTime now = LocalDateTime.now(clock);
         int promotedCount = 0;
-        while (event.getRemainingCoupons() > 0 && promotedCount < waitlist.size()) {
-            Coupon next = waitlist.get(promotedCount);
-            Coupon promoted = next.promoteFromWaitlist(now);
-            couponRepository.save(promoted);
-            event = eventRepository.save(event.decrementRemaining());
+
+        for (CouponJpaEntity waiting : waitingCoupons) {
+            if (event.getRemainingCoupons() <= 0) {
+                break;
+            }
+            waiting.promoteFromWaitlist(now);
+            couponJpaRepository.save(waiting);
+            event.decrementRemaining();
+            eventJpaRepository.save(event);
             promotedCount++;
         }
 
-        for (int index = promotedCount; index < waitlist.size(); index++) {
-            Coupon candidate = waitlist.get(index);
-            Coupon updated = candidate.withQueuePosition(index - promotedCount + 1);
-            couponRepository.save(updated);
+        // 남은 대기열 순서 갱신
+        for (int i = promotedCount; i < waitingCoupons.size(); i++) {
+            CouponJpaEntity remaining = waitingCoupons.get(i);
+            remaining.updateQueuePosition(i - promotedCount + 1);
+            couponJpaRepository.save(remaining);
         }
     }
 }

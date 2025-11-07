@@ -23,4 +23,9 @@ public class AuthService {
 
         return jwtTokenProvider.createToken(account.getAccountId(), account.getRole());
     }
+
+    public Account getAccount(Long accountId) {
+        return accountRepository.findById(accountId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid account id"));
+    }
 }

@@ -19,40 +19,48 @@ public class CouponController {
 
     private final CouponApplicationService couponApplicationService;
 
-    /** ✅ 로그인한 사용자(@CurrentUser) 기준으로 쿠폰 신청 */
+    /**
+     * ✅ 로그인한 사용자(@CurrentUser) 기준으로 쿠폰 신청
+     */
     @PostMapping("/events/{eventId}/coupons")
     @ResponseStatus(HttpStatus.CREATED)
     public CouponApplicationResponse apply(
-            @CurrentUser Long accountId,
-            @PathVariable Long eventId) {
+        @CurrentUser Long accountId,
+        @PathVariable Long eventId) {
         CouponApplicationResult result = couponApplicationService.apply(accountId, eventId);
         return CouponApplicationResponse.from(result);
     }
 
-    /** ✅ 쿠폰 사용 (USER 자신이 소유한 쿠폰만 가능하도록 service 내부에서 검증) */
+    /**
+     * ✅ 쿠폰 사용 (USER 자신이 소유한 쿠폰만 가능하도록 service 내부에서 검증)
+     */
     @PostMapping("/coupons/{couponId}/redeem")
     public CouponResponse redeem(
-            @CurrentUser Long accountId,
-            @PathVariable Long couponId) {
-        CouponSummary summary = couponApplicationService.redeem(accountId, couponId);
+        @CurrentUser Long accountId,
+        @PathVariable Long couponId) {
+        CouponSummary summary = couponApplicationService.redeem(couponId);
         return CouponResponse.from(summary);
     }
 
-    /** ✅ 노쇼 처리 (USER 본인 쿠폰만 가능하도록 검증) */
+    /**
+     * ✅ 노쇼 처리 (USER 본인 쿠폰만 가능하도록 검증)
+     */
     @PostMapping("/coupons/{couponId}/no-show")
     public CouponResponse markNoShow(
-            @CurrentUser Long accountId,
-            @PathVariable Long couponId) {
+        @CurrentUser Long accountId,
+        @PathVariable Long couponId) {
         CouponSummary summary = couponApplicationService.markNoShow(accountId, couponId);
         return CouponResponse.from(summary);
     }
 
-    /** ✅ 로그인한 사용자의 쿠폰 목록 조회 */
+    /**
+     * ✅ 로그인한 사용자의 쿠폰 목록 조회
+     */
     @GetMapping("/users/me/coupons")
     public List<CouponResponse> listCoupons(@CurrentUser Long accountId) {
         return couponApplicationService.listUserCoupons(accountId)
-                .stream()
-                .map(CouponResponse::from)
-                .collect(Collectors.toList());
+            .stream()
+            .map(CouponResponse::from)
+            .collect(Collectors.toList());
     }
 }
