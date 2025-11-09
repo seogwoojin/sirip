@@ -1,0 +1,101 @@
+event_id,title,event_type,organizer_type,target_major,target_grade,weekday,brand_score,date_gap,reward_amount,applied_participants,attended_participants
+1,전자전기컴퓨터공학부 대상 Workshop #1,WORKSHOP,COMPANY,전자전기컴퓨터공학부,2학년,SAT,0.91,2,8000,115,96
+2,경제학과 대상 Info Session #2,INFO_SESSION,COMPANY,경제학과,3-4학년,FRI,0.79,5,4000,82,65
+3,컴퓨터과학과 대상 Mentoring #3,MENTORING,UNIV_CENTER,컴퓨터과학과,3학년,THU,0.67,7,6000,71,59
+4,물리학과 대상 Workshop #4,WORKSHOP,DEPARTMENT,물리학과,4학년,MON,0.73,3,5000,68,55
+5,도시공학과 대상 Research Colloquium #5,RESEARCH_COLLOQUIUM,UNIV_CENTER,도시공학과,대학원생,THU,0.85,9,3000,59,48
+6,경영학과 대상 Info Session #6,INFO_SESSION,COMPANY,경영학과,3-4학년,MON,0.92,4,10000,129,111
+7,기계정보공학과 대상 Workshop #7,WORKSHOP,DEPARTMENT,기계정보공학과,2학년,FRI,0.64,8,3000,52,43
+8,산업공학과 대상 Workshop #8,WORKSHOP,COMPANY,산업공학과,3학년,WED,0.8,10,7000,85,72
+9,환경원예학과 대상 Info Session #9,INFO_SESSION,UNIV_CENTER,환경원예학과,4학년,THU,0.77,6,4000,67,57
+10,수학과 대상 Research Colloquium #10,RESEARCH_COLLOQUIUM,DEPARTMENT,수학과,대학원생,SAT,0.88,5,2000,48,41
+11,통계학과 대상 Workshop #11,WORKSHOP,UNIV_CENTER,통계학과,3-4학년,MON,0.9,3,6000,91,77
+12,컴퓨터과학과 대상 Info Session #12,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,TUE,0.93,1,7000,126,108
+13,화학공학과 대상 Workshop #13,WORKSHOP,UNIV_CENTER,화학공학과,3-4학년,THU,0.82,4,4000,78,63
+14,생명과학과 대상 Research Colloquium #14,RESEARCH_COLLOQUIUM,UNIV_CENTER,생명과학과,대학원생,FRI,0.69,12,2000,35,29
+15,기계정보공학과 대상 Info Session #15,INFO_SESSION,COMPANY,기계정보공학과,3-4학년,WED,0.87,2,6000,115,99
+16,산업공학과 대상 Workshop #16,WORKSHOP,DEPARTMENT,산업공학과,3학년,TUE,0.7,9,5000,60,51
+17,경영학과 대상 Mentoring #17,MENTORING,UNIV_CENTER,경영학과,3학년,THU,0.79,7,3000,62,53
+18,도시공학과 대상 Workshop #18,WORKSHOP,COMPANY,도시공학과,3-4학년,MON,0.74,4,7000,86,70
+19,전자전기컴퓨터공학부 대상 Info Session #19,INFO_SESSION,COMPANY,전자전기컴퓨터공학부,3-4학년,WED,0.95,1,9000,137,120
+20,경제학과 대상 Research Colloquium #20,RESEARCH_COLLOQUIUM,DEPARTMENT,경제학과,대학원생,FRI,0.6,11,3000,31,26
+21,컴퓨터과학과 대상 Workshop #21,WORKSHOP,COMPANY,컴퓨터과학과,4학년,SAT,0.86,5,8000,98,84
+22,산업공학과 대상 Info Session #22,INFO_SESSION,COMPANY,산업공학과,3-4학년,MON,0.91,3,5000,118,102
+23,물리학과 대상 Research Colloquium #23,RESEARCH_COLLOQUIUM,UNIV_CENTER,물리학과,대학원생,THU,0.67,10,2000,39,33
+24,건축학과 대상 Mentoring #24,MENTORING,UNIV_CENTER,건축학과,3학년,WED,0.73,6,4000,63,55
+25,화학공학과 대상 Workshop #25,WORKSHOP,DEPARTMENT,화학공학과,3-4학년,FRI,0.77,8,5000,58,49
+26,통계학과 대상 Info Session #26,INFO_SESSION,COMPANY,통계학과,4학년,THU,0.9,4,6000,112,94
+27,수학과 대상 Workshop #27,WORKSHOP,COMPANY,수학과,3학년,FRI,0.85,2,7000,100,88
+28,전자전기컴퓨터공학부 대상 Workshop #28,WORKSHOP,UNIV_CENTER,전자전기컴퓨터공학부,2-3학년,MON,0.81,5,5000,72,61
+29,산업공학과 대상 Research Colloquium #29,RESEARCH_COLLOQUIUM,UNIV_CENTER,산업공학과,대학원생,THU,0.8,8,4000,54,46
+30,컴퓨터과학과 대상 Info Session #30,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,TUE,0.94,3,10000,140,118
+31,환경원예학과 대상 Workshop #31,WORKSHOP,UNIV_CENTER,환경원예학과,3학년,MON,0.76,6,3000,59,50
+32,도시공학과 대상 Workshop #32,WORKSHOP,COMPANY,도시공학과,2-3학년,THU,0.84,7,7000,93,81
+33,경제학과 대상 Info Session #33,INFO_SESSION,COMPANY,경제학과,3-4학년,WED,0.88,2,4000,104,89
+34,물리학과 대상 Workshop #34,WORKSHOP,DEPARTMENT,물리학과,4학년,MON,0.69,9,4000,54,46
+35,건축학과 대상 Research Colloquium #35,RESEARCH_COLLOQUIUM,UNIV_CENTER,건축학과,대학원생,FRI,0.75,10,3000,46,39
+36,통계학과 대상 Workshop #36,WORKSHOP,COMPANY,통계학과,3학년,THU,0.9,5,7000,92,79
+37,기계정보공학과 대상 Info Session #37,INFO_SESSION,COMPANY,기계정보공학과,3-4학년,WED,0.93,1,5000,131,114
+38,경영학과 대상 Workshop #38,WORKSHOP,UNIV_CENTER,경영학과,3학년,MON,0.8,6,6000,79,66
+39,전자전기컴퓨터공학부 대상 Research Colloquium #39,RESEARCH_COLLOQUIUM,DEPARTMENT,전자전기컴퓨터공학부,대학원생,FRI,0.77,9,2000,37,31
+40,산업공학과 대상 Workshop #40,WORKSHOP,COMPANY,산업공학과,2-3학년,THU,0.83,4,5000,85,74
+41,컴퓨터과학과 대상 Info Session #41,INFO_SESSION,COMPANY,컴퓨터과학과,3-4학년,MON,0.95,3,9000,142,125
+42,화학공학과 대상 Mentoring #42,MENTORING,UNIV_CENTER,화학공학과,3학년,FRI,0.82,7,4000,65,54
+43,경영학과 대상 Workshop #43,WORKSHOP,COMPANY,경영학과,4학년,THU,0.88,6,8000,98,85
+44,기계정보공학과 대상 Workshop #44,WORKSHOP,DEPARTMENT,기계정보공학과,3-4학년,WED,0.73,10,4000,52,44
+45,환경원예학과 대상 Info Session #45,INFO_SESSION,COMPANY,환경원예학과,3-4학년,MON,0.9,3,3000,108,93
+46,도시공학과 대상 Workshop #46,WORKSHOP,COMPANY,도시공학과,3학년,TUE,0.83,4,7000,86,73
+47,전자전기컴퓨터공학부 대상 Research Colloquium #47,RESEARCH_COLLOQUIUM,UNIV_CENTER,전자전기컴퓨터공학부,대학원생,FRI,0.8,9,2000,42,36
+48,산업공학과 대상 Workshop #48,WORKSHOP,UNIV_CENTER,산업공학과,2-3학년,MON,0.74,7,4000,61,53
+49,통계학과 대상 Info Session #49,INFO_SESSION,COMPANY,통계학과,3-4학년,WED,0.91,2,7000,124,106
+50,수학과 대상 Workshop #50,WORKSHOP,COMPANY,수학과,3학년,SAT,0.87,5,8000,95,81
+51,경영학과 대상 Info Session #51,INFO_SESSION,COMPANY,경영학과,3-4학년,TUE,0.89,6,9000,118,103
+52,화학공학과 대상 Workshop #52,WORKSHOP,UNIV_CENTER,화학공학과,3학년,FRI,0.72,9,4000,54,45
+53,기계정보공학과 대상 Mentoring #53,MENTORING,UNIV_CENTER,기계정보공학과,3학년,THU,0.8,7,5000,68,56
+54,산업공학과 대상 Workshop #54,WORKSHOP,COMPANY,산업공학과,4학년,MON,0.84,5,6000,89,76
+55,컴퓨터과학과 대상 Info Session #55,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,WED,0.94,1,8000,140,123
+56,경제학과 대상 Workshop #56,WORKSHOP,UNIV_CENTER,경제학과,3학년,FRI,0.76,8,4000,61,52
+57,통계학과 대상 Research Colloquium #57,RESEARCH_COLLOQUIUM,DEPARTMENT,통계학과,대학원생,THU,0.7,10,2000,39,32
+58,경영학과 대상 Workshop #58,WORKSHOP,COMPANY,경영학과,3학년,SAT,0.85,6,7000,93,81
+59,환경원예학과 대상 Info Session #59,INFO_SESSION,COMPANY,환경원예학과,3-4학년,TUE,0.88,3,4000,111,97
+60,기계정보공학과 대상 Workshop #60,WORKSHOP,UNIV_CENTER,기계정보공학과,3-4학년,MON,0.83,7,6000,75,65
+61,도시공학과 대상 Workshop #61,WORKSHOP,DEPARTMENT,도시공학과,3학년,THU,0.74,8,4000,56,48
+62,컴퓨터과학과 대상 Info Session #62,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,FRI,0.92,2,10000,147,130
+63,산업공학과 대상 Workshop #63,WORKSHOP,COMPANY,산업공학과,3학년,TUE,0.86,4,7000,92,79
+64,경제학과 대상 Workshop #64,WORKSHOP,UNIV_CENTER,경제학과,3학년,THU,0.79,6,5000,73,61
+65,전자전기컴퓨터공학부 대상 Research Colloquium #65,RESEARCH_COLLOQUIUM,DEPARTMENT,전자전기컴퓨터공학부,대학원생,FRI,0.78,10,3000,41,34
+66,산업공학과 대상 Info Session #66,INFO_SESSION,COMPANY,산업공학과,3학년,WED,0.93,3,8000,130,114
+67,수학과 대상 Workshop #67,WORKSHOP,UNIV_CENTER,수학과,3학년,SAT,0.83,7,4000,65,55
+68,경영학과 대상 Mentoring #68,MENTORING,UNIV_CENTER,경영학과,3학년,FRI,0.79,5,5000,69,59
+69,환경원예학과 대상 Workshop #69,WORKSHOP,DEPARTMENT,환경원예학과,3학년,MON,0.76,8,3000,54,46
+70,컴퓨터과학과 대상 Info Session #70,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,TUE,0.95,1,9000,142,124
+71,기계정보공학과 대상 Workshop #71,WORKSHOP,COMPANY,기계정보공학과,3-4학년,FRI,0.88,3,7000,101,89
+72,경제학과 대상 Workshop #72,WORKSHOP,DEPARTMENT,경제학과,3학년,THU,0.72,9,4000,55,46
+73,통계학과 대상 Research Colloquium #73,RESEARCH_COLLOQUIUM,UNIV_CENTER,통계학과,대학원생,FRI,0.81,10,3000,48,40
+74,산업공학과 대상 Info Session #74,INFO_SESSION,COMPANY,산업공학과,4학년,WED,0.9,4,6000,116,98
+75,전자전기컴퓨터공학부 대상 Workshop #75,WORKSHOP,UNIV_CENTER,전자전기컴퓨터공학부,3학년,SAT,0.82,6,5000,73,62
+76,기계정보공학과 대상 Info Session #76,INFO_SESSION,COMPANY,기계정보공학과,3-4학년,THU,0.94,2,9000,136,121
+77,산업공학과 대상 Workshop #77,WORKSHOP,COMPANY,산업공학과,3학년,FRI,0.89,3,8000,113,98
+78,화학공학과 대상 Workshop #78,WORKSHOP,UNIV_CENTER,화학공학과,2-3학년,MON,0.8,7,5000,71,61
+79,경영학과 대상 Workshop #79,WORKSHOP,COMPANY,경영학과,4학년,FRI,0.87,6,8000,99,85
+80,컴퓨터과학과 대상 Info Session #80,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,WED,0.95,1,10000,150,132
+81,산업공학과 대상 Workshop #81,WORKSHOP,DEPARTMENT,산업공학과,3학년,TUE,0.75,8,4000,58,49
+82,경영학과 대상 Info Session #82,INFO_SESSION,COMPANY,경영학과,3-4학년,MON,0.88,3,6000,112,97
+83,환경원예학과 대상 Workshop #83,WORKSHOP,UNIV_CENTER,환경원예학과,3학년,FRI,0.83,7,5000,71,62
+84,경제학과 대상 Workshop #84,WORKSHOP,COMPANY,경제학과,3-4학년,WED,0.9,4,7000,95,83
+85,기계정보공학과 대상 Info Session #85,INFO_SESSION,COMPANY,기계정보공학과,4학년,TUE,0.92,2,8000,128,111
+86,통계학과 대상 Workshop #86,WORKSHOP,UNIV_CENTER,통계학과,3학년,THU,0.84,6,5000,76,65
+87,도시공학과 대상 Research Colloquium #87,RESEARCH_COLLOQUIUM,DEPARTMENT,도시공학과,대학원생,FRI,0.7,11,2000,34,29
+88,경제학과 대상 Workshop #88,WORKSHOP,COMPANY,경제학과,3학년,MON,0.85,5,7000,92,80
+89,컴퓨터과학과 대상 Info Session #89,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,WED,0.94,3,9000,139,122
+90,산업공학과 대상 Workshop #90,WORKSHOP,UNIV_CENTER,산업공학과,3학년,FRI,0.79,6,4000,67,56
+91,전자전기컴퓨터공학부 대상 Info Session #91,INFO_SESSION,COMPANY,전자전기컴퓨터공학부,3-4학년,TUE,0.91,1,8000,134,118
+92,기계정보공학과 대상 Workshop #92,WORKSHOP,COMPANY,기계정보공학과,3학년,FRI,0.88,4,7000,97,84
+93,경제학과 대상 Workshop #93,WORKSHOP,DEPARTMENT,경제학과,2-3학년,MON,0.73,9,4000,54,45
+94,통계학과 대상 Research Colloquium #94,RESEARCH_COLLOQUIUM,UNIV_CENTER,통계학과,대학원생,THU,0.8,10,3000,47,39
+95,컴퓨터과학과 대상 Info Session #95,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,WED,0.93,2,9000,138,120
+96,산업공학과 대상 Workshop #96,WORKSHOP,UNIV_CENTER,산업공학과,3학년,MON,0.83,6,5000,74,64
+97,경영학과 대상 Workshop #97,WORKSHOP,COMPANY,경영학과,3학년,FRI,0.9,4,8000,100,87
+98,도시공학과 대상 Workshop #98,WORKSHOP,DEPARTMENT,도시공학과,3학년,THU,0.75,8,3000,55,47
+99,컴퓨터과학과 대상 Info Session #99,INFO_SESSION,COMPANY,컴퓨터과학과,4학년,MON,0.95,1,10000,150,133
+100,전자전기컴퓨터공학부 대상 Research Colloquium #100,RESEARCH_COLLOQUIUM,DEPARTMENT,전자전기컴퓨터공학부,대학원생,FRI,0.8,10,2000,40,34
