@@ -10,7 +10,7 @@ import uos.software.sirip.event.api.response.EventResponse;
 import uos.software.sirip.event.application.EventQueryService;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/events")
 @RequiredArgsConstructor
 public class EventController {
 

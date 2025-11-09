@@ -33,7 +33,7 @@ export default function App() {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/events`);
-        setEvents(response.data.events ?? []);
+        setEvents(response.data ?? []);
       } catch (err) {
         setError('행사 정보를 불러오는 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.');
       } finally {

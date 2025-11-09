@@ -48,7 +48,7 @@ public class CouponApplicationService {
         }
 
         // 중복 신청 확인
-        CouponJpaEntity existing = couponJpaRepository.findByEventIdAndAccountId(eventId, accountId)
+        CouponJpaEntity existing = couponJpaRepository.findByEventIdAndAccount(eventId, account)
             .orElse(null);
         if (existing != null) {
             if (existing.getStatus() == CouponStatus.WAITING) {
@@ -124,7 +124,8 @@ public class CouponApplicationService {
      */
     @Transactional(readOnly = true)
     public List<CouponSummary> listUserCoupons(Long accountId) {
-        return couponJpaRepository.findByAccountIdOrderByAppliedAtDesc(accountId).stream()
+        Account account = authService.getAccount(accountId);
+        return couponJpaRepository.findByAccountOrderByAppliedAtDesc(account).stream()
             .map(CouponSummary::from)
             .collect(Collectors.toList());
     }
