@@ -45,7 +45,6 @@ public class Event {
     private Account account;
 
     public Event(
-        Long id,
         String title,
         String description,
         String rewardDescription,
@@ -55,7 +54,6 @@ public class Event {
         LocalDateTime endAt,
         Account account
     ) {
-        this.id = id;
         this.title = title;
         this.description = description;
         this.rewardDescription = rewardDescription;

@@ -23,15 +23,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults()) // ✅ 활성화
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/api/events/**").permitAll()       // 로그인·회원가입 공개
-                        .requestMatchers("/api/admin/**").hasRole("MANAGER") // 관리자만
-                        .requestMatchers("/user/**").hasAnyRole("USER", "MANAGER") // 사용자 이상
-                        .anyRequest().authenticated()
-                )
-                .formLogin(Customizer.withDefaults());
+            .csrf(csrf -> csrf.disable())
+            .cors(Customizer.withDefaults()) // ✅ 활성화
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
+                ).permitAll()
+                .requestMatchers("/auth/**", "/api/events/**", "/**")
+                .permitAll()       // 로그인·회원가입 공개
+                .requestMatchers("/api/admin/**").hasRole("MANAGER") // 관리자만
+                .requestMatchers("/user/**").hasAnyRole("USER", "MANAGER") // 사용자 이상
+                .anyRequest().authenticated()
+            )
+            // 로그인 폼 제거 (기본 HTML 폼 대신 API 사용)
+            .formLogin(form -> form.disable())
+            // 로그아웃도 필요 시 비활성화
+            .logout(logout -> logout.disable());
 
         return http.build();
     }

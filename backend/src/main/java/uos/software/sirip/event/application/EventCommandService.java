@@ -36,7 +36,7 @@ public class EventCommandService {
         Account account = authService.getAccount(accountId);
 
         Event event = new Event(
-            null, title, description, rewardDescription,
+            title, description, rewardDescription,
             totalCoupons, totalCoupons, startAt, endAt, account
         );
 
