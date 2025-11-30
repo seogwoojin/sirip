@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uos.software.sirip.coupon.domain.CouponStatus;
@@ -28,6 +29,7 @@ public class CouponApplicationService {
     private final EventJpaRepository eventJpaRepository;
     private final Clock clock;
     private final AuthService authService;
+    private final StringRedisTemplate stringRedisTemplate;
 
     /**
      * ✅ 쿠폰 신청
@@ -74,6 +76,74 @@ public class CouponApplicationService {
         CouponJpaEntity waiting = CouponJpaEntity.waiting(event, account, now, queuePosition);
         saved = couponJpaRepository.save(waiting);
         return CouponApplicationResult.queued(CouponSummary.from(saved));
+    }
+
+    /**
+     * ✅ 쿠폰 신청 (대기열 제거, Redis 기반 초고속 발급)
+     */
+    public CouponApplicationResult applyV2(Long accountId, Long eventId) {
+        LocalDateTime now = LocalDateTime.now(clock);
+        Account account = authService.getAccount(accountId);
+
+        if (Boolean.TRUE.equals(account.getPenalty())) {
+            throw new ActivePenaltyException(accountId);
+        }
+
+        Event event = eventJpaRepository.findById(eventId)
+            .orElseThrow(() -> new EventNotFoundException(eventId));
+
+        if (!event.isActive(now)) {
+            throw new EventClosedException(eventId);
+        }
+
+        // 1️⃣ Redis SET으로 중복 신청 방지
+        String appliedKey = buildAppliedKey(eventId);
+        Long added = stringRedisTemplate.opsForSet()
+            .add(appliedKey, accountId.toString());
+
+        // added == 0 이면 이미 존재(중복 신청)
+        if (added != null && added == 0L) {
+            throw new DuplicateApplicationException(accountId, eventId);
+        }
+
+        // 2️⃣ Redis DECR로 남은 수량 원자 감소
+        String remainKey = buildRemainKey(eventId);
+        Long remain = stringRedisTemplate.opsForValue()
+            .decrement(remainKey);
+        System.out.println(remain);
+        if (remain == null) {
+            // 설정 안 되어 있거나 Redis 문제인 경우 → 운영 정책에 맞게 처리
+            // 여기서는 시스템 오류로 처리
+            // 중복 SET 롤백
+            stringRedisTemplate.opsForSet().remove(appliedKey, accountId.toString());
+            throw new IllegalStateException("쿠폰 잔여 수량이 설정되어 있지 않습니다. eventId=" + eventId);
+        }
+
+        if (remain < 0) {
+            // 수량 소진 상태 → 롤백
+            stringRedisTemplate.opsForValue().increment(remainKey);              // DECR 롤백
+            stringRedisTemplate.opsForSet().remove(appliedKey, accountId.toString()); // 중복 신청 세트 롤백
+            throw new CouponSoldOutException(eventId);
+        }
+
+        // 3️⃣ 실제 쿠폰 발급 (DB 기록)
+        CouponJpaEntity issued = CouponJpaEntity.issued(event, account, now, now);
+        CouponJpaEntity saved = couponJpaRepository.save(issued);
+
+        // (선택) Event 엔티티의 remainingCoupons 필드는
+        // 이제 진실의 근원이 아니면, 업데이트 하지 않거나, 배치/동기화용으로만 사용
+        // event.decrementRemaining();
+        // eventJpaRepository.save(event);
+
+        return CouponApplicationResult.issued(CouponSummary.from(saved));
+    }
+
+    private String buildRemainKey(Long eventId) {
+        return "coupon:" + eventId + ":remain";
+    }
+
+    private String buildAppliedKey(Long eventId) {
+        return "coupon:" + eventId + ":applied";
     }
 
     /**

@@ -27,7 +27,7 @@ public class CouponController {
     public CouponApplicationResponse apply(
         @CurrentUser Long accountId,
         @PathVariable Long eventId) {
-        CouponApplicationResult result = couponApplicationService.apply(accountId, eventId);
+        CouponApplicationResult result = couponApplicationService.applyV2(accountId, eventId);
         return CouponApplicationResponse.from(result);
     }
 

@@ -31,7 +31,7 @@ public class InitService {
             for (int i = 0; i < 500; i++) {
                 Account admin = new Account(
                     Role.USER,
-                    "admin" + i + "$@uos.ac.kr",
+                    "admin" + i + "@uos.ac.kr",
                     passwordEncoder.encode("encoded_password")
                 );
                 account = accountRepository.save(admin);

@@ -1,8 +1,10 @@
 package uos.software.sirip.event.application;
 
 import java.time.Clock;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uos.software.sirip.coupon.application.CouponApplicationService;
@@ -21,6 +23,7 @@ public class EventCommandService {
     private final CouponApplicationService couponApplicationService;
     private final Clock clock;
     private final AuthService authService;
+    private final StringRedisTemplate stringRedisTemplate;
 
     /**
      * ✅ 이벤트 생성
@@ -41,7 +44,18 @@ public class EventCommandService {
         );
 
         Event saved = eventJpaRepository.save(event);
+        initializeCouponStock(saved.getId(), saved.getTotalCoupons());
         return toSummary(saved);
+    }
+
+    public void initializeCouponStock(Long eventId, int totalCoupons) {
+        String remainKey = "coupon:" + eventId + ":remain";
+        stringRedisTemplate.opsForValue()
+            .set(remainKey, String.valueOf(totalCoupons));
+
+        String appliedKey = "coupon:" + eventId + ":applied";
+        // 필요 시 TTL 설정 (이벤트 종료 후 자동 삭제)
+        stringRedisTemplate.expire(appliedKey, Duration.ofDays(1));
     }
 
     /**

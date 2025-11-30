@@ -50,7 +50,7 @@ export default function (data) {
   const token = data.tokens[__VU - 1]; // 각 VU는 고유 유저 사용
   if (!token) return;
 
-  const res = http.post(`${BASE_URL}/api/events/1/coupons`, null, {
+  const res = http.post(`${BASE_URL}/api/events/5/coupons`, null, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
