@@ -278,7 +278,6 @@ def build_prompt(
 대상: {features['target_major']} ({features['target_grade']})
 남은 모집 일수: {features['date_gap']}
 브랜드 점수: {features['brand_score']}
-홍보 강도: {features['promotion_intensity']}
 
 추천 리워드 금액: {reward:.0f}원
 예상 참여자 수: {participants:.1f}명
@@ -296,21 +295,21 @@ def generate_explanation(prompt: str) -> str:
     GPT를 이용해 사람 친화적인 설명 생성.
     실패 시 기본 설명 반환.
     """
-    # try:
-    #     completion = client.chat.completions.create(
-    #         model="gpt-5-nano",
-    #         messages=[
-    #             {
-    #                 "role": "system",
-    #                 "content": "당신은 대학 행사 리워드 최적화 전문가입니다.",
-    #             },
-    #             {"role": "user", "content": prompt},
-    #         ],
-    #         temperature=0.4,
-    #     )
-    #     return completion.choices[0].message.content.strip()
-    # except Exception:
-    return (
-            "추천 리워드와 예측 참여자 수를 바탕으로 설정된 금액입니다. "
-            "남은 모집 일수, 브랜드 인지도, 홍보 강도 등을 종합적으로 고려했습니다."
+    try:
+        completion = client.chat.completions.create(
+            model="gpt-5-nano",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "당신은 대학 행사 리워드 최적화 전문가입니다.",
+                },
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.4,
         )
+        return completion.choices[0].message.content.strip()
+    except Exception:
+        return (
+                "추천 리워드와 예측 참여자 수를 바탕으로 설정된 금액입니다. "
+                "남은 모집 일수, 브랜드 인지도, 홍보 강도 등을 종합적으로 고려했습니다."
+            )

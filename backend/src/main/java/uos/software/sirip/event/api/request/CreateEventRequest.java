@@ -1,7 +1,9 @@
 package uos.software.sirip.event.api.request;
 
 import java.time.LocalDateTime;
+import lombok.Getter;
 
+@Getter
 public class CreateEventRequest {
 
     private String title;
@@ -11,27 +13,11 @@ public class CreateEventRequest {
     private LocalDateTime startAt;
     private LocalDateTime endAt;
 
-    public String getTitle() {
-        return title;
-    }
+    // 🔥 새 필드 5개 추가
+    private String eventType;
+    private String organizerType;
+    private String targetMajor;
+    private String targetGrade;
+    private Double brandScore;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getRewardDescription() {
-        return rewardDescription;
-    }
-
-    public int getTotalCoupons() {
-        return totalCoupons;
-    }
-
-    public LocalDateTime getStartAt() {
-        return startAt;
-    }
-
-    public LocalDateTime getEndAt() {
-        return endAt;
-    }
 }

@@ -8,6 +8,7 @@ import uos.software.sirip.config.security.CurrentUser;
 import uos.software.sirip.event.api.request.*;
 import uos.software.sirip.event.api.response.EventResponse;
 import uos.software.sirip.event.application.EventCommandService;
+import uos.software.sirip.event.application.EventRewardService;
 import uos.software.sirip.event.application.EventSummary;
 
 @RestController
@@ -16,6 +17,7 @@ import uos.software.sirip.event.application.EventSummary;
 public class EventAdminController {
 
     private final EventCommandService eventCommandService;
+    private final EventRewardService eventRewardService;
 
     /**
      * ✅ 관리자(현재 로그인 사용자) 기반 이벤트 생성
@@ -31,7 +33,13 @@ public class EventAdminController {
             request.getRewardDescription(),
             request.getTotalCoupons(),
             request.getStartAt(),
-            request.getEndAt()
+            request.getEndAt(),
+                // 🔥 새로 추가된 필드 전달
+                request.getEventType(),
+                request.getOrganizerType(),
+                request.getTargetMajor(),
+                request.getTargetGrade(),
+                request.getBrandScore()
         );
         return EventResponse.from(summary);
     }
@@ -77,5 +85,14 @@ public class EventAdminController {
         @PathVariable Long eventId) {
         EventSummary summary = eventCommandService.get(accountId, eventId);
         return EventResponse.from(summary);
+    }
+
+    @PatchMapping("/{eventId}/reward/auto")
+    public EventResponse autoOptimizeReward(
+            @PathVariable Long eventId,
+            @RequestParam int targetParticipants
+    ) {
+        EventSummary updated = eventRewardService.optimizeAndApplyReward(eventId, targetParticipants);
+        return EventResponse.from(updated);
     }
 }

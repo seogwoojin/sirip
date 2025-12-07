@@ -4,8 +4,15 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import uos.software.sirip.config.security.CurrentUser;
 
 @Configuration
 public class SwaggerConfig {
@@ -28,5 +35,35 @@ public class SwaggerConfig {
                         .type(SecurityScheme.Type.HTTP)
                         .scheme("bearer")
                         .bearerFormat("JWT")));
+    }
+
+
+
+    @Bean
+    public OperationCustomizer hideCurrentUserParameter() {
+        return (operation, handlerMethod) -> {
+
+            // Swagger 문서 모델 Parameter
+            List<io.swagger.v3.oas.models.parameters.Parameter> swaggerParams = operation.getParameters();
+            if (swaggerParams == null) return operation;
+
+            // Java Reflection Parameter
+            java.lang.reflect.Parameter[] methodParams = handlerMethod.getMethod().getParameters();
+
+            // @CurrentUser 붙은 파라미터명 찾기
+            Set<String> hiddenParamNames = Arrays.stream(methodParams)
+                    .filter(p -> p.isAnnotationPresent(CurrentUser.class))
+                    .map(java.lang.reflect.Parameter::getName)
+                    .collect(Collectors.toSet());
+
+            // Swagger 문서 모델에서 해당 파라미터 제거
+            operation.setParameters(
+                    swaggerParams.stream()
+                            .filter(p -> !hiddenParamNames.contains(p.getName()))
+                            .collect(Collectors.toList())
+            );
+
+            return operation;
+        };
     }
 }
