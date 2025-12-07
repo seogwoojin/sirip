@@ -1,109 +1,220 @@
 :root {
-  font-family: 'Pretendard', 'Noto Sans KR', system-ui, sans-serif;
-  color: #0f172a;
-  background-color: #f8fafc;
-  line-height: 1.6;
+  --primary-color: #4a90e2;
+  --secondary-color: #f5f5f5;
+  --text-color: #333;
+  --border-color: #ddd;
+  --error-color: #e74c3c;
+  --success-color: #2ecc71;
+  --accent-color: #9b59b6;
 }
 
 body {
-  margin: 0;
-}
-
-.page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.hero {
-  background: linear-gradient(135deg, #38bdf8, #6366f1);
-  color: white;
-  padding: 4rem 1.5rem;
-  text-align: center;
-}
-
-.hero h1 {
-  margin: 0 0 0.75rem;
-  font-size: clamp(2.5rem, 5vw, 3rem);
-}
-
-.hero p {
-  margin: 0 auto;
-  max-width: 40rem;
-  font-size: 1.1rem;
-}
-
-main {
-  flex: 1;
-  padding: 3rem 1.5rem;
-  max-width: 960px;
-  margin: 0 auto;
-}
-
-.features {
-  margin-bottom: 3rem;
-}
-
-.feature-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.feature-card {
-  background-color: white;
-  border-radius: 16px;
-  box-shadow: 0 16px 24px rgba(15, 23, 42, 0.08);
-  padding: 1.5rem;
-}
-
-.events {
-  background-color: white;
-  border-radius: 16px;
-  box-shadow: 0 16px 24px rgba(15, 23, 42, 0.08);
-  padding: 1.5rem;
-}
-
-.event-list {
-  display: grid;
-  gap: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
-  list-style: none;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
 }
 
-.event-card {
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  margin-bottom: 2rem;
   padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.event-card dl {
-  display: grid;
-  gap: 0.5rem;
-  margin: 1rem 0 0;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-dt {
+.header-actions button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #666;
+}
+
+.header-actions button.active {
+    color: var(--primary-color);
+    font-weight: bold;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.header-actions button.logout-btn {
+    color: var(--error-color);
+}
+
+/* Login */
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Fix padding issue */
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1rem;
+  border: none;
+}
+
+button[type="submit"], .primary-btn {
+  background-color: var(--primary-color);
+  color: white;
+  width: 100%;
+}
+
+.secondary-btn {
+    background-color: #999;
+    color: white;
+}
+
+.accent-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.small-btn {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Event List */
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.event-table th, .event-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.event-table th {
+  background-color: #f8f9fa;
   font-weight: 600;
-  color: #1e293b;
 }
 
-dd {
-  margin: 0;
+/* Create Event */
+.create-event-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-footer {
-  text-align: center;
-  padding: 2rem 1rem;
-  color: #475569;
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+.form-row .form-group {
+    flex: 1;
 }
 
-.muted {
-  color: #64748b;
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-.error {
-  color: #ef4444;
+.button-group button {
+    width: auto;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.section {
+    margin: 20px 0;
+}
+
+.hint {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.close-btn {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #666;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.error-message {
+  color: var(--error-color);
+  margin-bottom: 1rem;
 }

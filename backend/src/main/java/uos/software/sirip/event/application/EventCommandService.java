@@ -29,39 +29,39 @@ public class EventCommandService {
      * ✅ 이벤트 생성
      */
     public EventSummary create(
-            Long accountId,
-            String title,
-            String description,
-            String rewardDescription,
-            int totalCoupons,
-            LocalDateTime startAt,
-            LocalDateTime endAt,
-            String eventType,
-            String organizerType,
-            String targetMajor,
-            String targetGrade,
-            Double brandScore
+        Long accountId,
+        String title,
+        String description,
+        String rewardDescription,
+        int totalCoupons,
+        LocalDateTime startAt,
+        LocalDateTime endAt,
+        String eventType,
+        String organizerType,
+        String targetMajor,
+        String targetGrade,
+        Double brandScore
     ) {
         Account account = authService.getAccount(accountId);
 
         Event event = new Event(
-                title,
-                description,
-                rewardDescription,
-                totalCoupons,
-                totalCoupons,
-                startAt,
-                endAt,
-                account,
-                eventType,
-                organizerType,
-                targetMajor,
-                targetGrade,
-                brandScore
+            title,
+            description,
+            rewardDescription,
+            totalCoupons,
+            totalCoupons,
+            startAt,
+            endAt,
+            account,
+            eventType,
+            organizerType,
+            targetMajor,
+            targetGrade,
+            brandScore
         );
+        Event saved = eventJpaRepository.save(event);
 
-        eventJpaRepository.save(event);
-
+        initializeCouponStock(saved.getId(), saved.getTotalCoupons());
         return toSummary(event);
     }
 

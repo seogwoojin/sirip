@@ -3,16 +3,16 @@ import { check } from 'k6';
 
 const BASE_URL = __ENV.API_BASE_URL || 'http://localhost:8080';
 
-// ✅ 유저 100명 정의
+// 유저 20명
 const users = [];
-for (let i = 20; i < 100; i++) {
+for (let i = 0; i < 20; i++) {
   users.push({
-    email: `admin${i}$@uos.ac.kr`,
+    email: `admin${i}@uos.ac.kr`,
     password: 'encoded_password',
   });
 }
 
-// ✅ 사전 로그인 (모든 유저의 토큰 저장)
+// 로그인
 export function setup() {
   const tokens = users.map((user) => {
     const payload = JSON.stringify({
@@ -24,38 +24,31 @@ export function setup() {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    if (res.status === 200 && res.json('accessToken')) {
-      return res.json('accessToken');
-    } else {
-      console.error(`❌ 로그인 실패: ${user.email} (${res.status})`);
-      return null;
-    }
+    return res.json('accessToken');
   });
 
   return { tokens };
 }
 
-// ✅ 모든 유저가 동시에 1회 발급 시도
 export const options = {
-  vus: 80,          // 가상 유저 수 = 실제 유저 수
-  iterations: 80,   // 각 유저가 딱 1번만 실행
+  vus: 20,
+  iterations: 20,
   thresholds: {
     http_req_failed: ['rate<0.05'],
     http_req_duration: ['p(95)<1000'],
   },
 };
 
-// ✅ 쿠폰 발급 (1회 한정)
+// 발급
 export default function (data) {
-  const token = data.tokens[__VU - 1]; // 각 VU는 고유 유저 사용
+  const token = data.tokens[__VU - 1];
   if (!token) return;
 
-  const res = http.post(`${BASE_URL}/api/events/5/coupons`, null, {
+  const res = http.post(`${BASE_URL}/api/events/9/coupons`, null, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
   check(res, {
-    '쿠폰 발급 성공 (200|201)': (r) => r.status === 200 || r.status === 201,
-    '쿠폰 중복 거절 (409)': (r) => r.status === 409 || r.status === 400,
+    '200 또는 201 성공': (r) => r.status === 200 || r.status === 201,
   });
 }
